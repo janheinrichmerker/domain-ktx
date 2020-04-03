@@ -37,11 +37,16 @@ inline class Domain(
     val suffix get() = LIST.getPublicSuffix(name) ?: labels.run { if (size > 1) last() else "" }
 
     /**
+     * This domain's [suffix] labels, which are separated by [`.`][DELIMITER].
+     */
+    val suffixLabels get() = suffix.split()
+
+    /**
      * Get the top-level domain (TLD),
      * the domain, consisting of only the [suffix],
      * or the whole [name] if the suffix is empty.
      */
-    val topLevel get() = Domain(suffix.takeUnless(String::isEmpty) ?: name)
+    val topLevel get() = suffix.takeUnless(String::isEmpty)?.let(::Domain) ?: this
 
     val registrable: Domain
         get() {
@@ -67,4 +72,13 @@ inline class Domain(
         get() {
             return nameWithoutSuffix.substringBeforeLast(DELIMITER, "")
         }
+
+    /**
+     * This domain's prefix/sub-domain labels, which are separated by [`.`][DELIMITER].
+     */
+    val prefixLabels get() = prefix.split()
+
+    val hasPrefix get() = prefix.isNotEmpty()
+
+    fun stripSubDomain() = if (hasPrefix) Domain(name.substringAfter(DELIMITER)) else this
 }
