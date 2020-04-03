@@ -4,7 +4,7 @@ inline class Domain(
     val name: String
 ) {
 
-    constructor(parts: Iterable<String>) : this(parts.joinToString(DELIMITER.toString()))
+    constructor(labels: Iterable<String>) : this(labels.joinToString(DELIMITER.toString()))
 
     companion object {
         const val DELIMITER = '.'
@@ -24,6 +24,8 @@ inline class Domain(
 
     /**
      * [Public Suffix](https://publicsuffix.org/)
+     *
+     * For most cases, [suffix] is more appropriate and less error prone.
      */
     val publicSuffix
         get() =
@@ -42,36 +44,38 @@ inline class Domain(
     val suffixLabels get() = suffix.split()
 
     /**
-     * Get the top-level domain (TLD),
-     * the domain, consisting of only the [suffix],
+     * The top-level domain (TLD),
+     * i.e., the domain, consisting of only the [suffix],
      * or the whole [name] if the suffix is empty.
      */
     val topLevel get() = suffix.takeUnless(String::isEmpty)?.let(::Domain) ?: this
 
+    /**
+     * The registrable domain
+     */
     val registrable: Domain
         get() {
             val registrableName = LIST.getRegistrableDomain(name)
-                ?: error("Domain '$name' is not registrable.")
+                ?: error("Domain '$name' does not contain a registrable domain.")
             return Domain(registrableName)
         }
 
     private val nameWithoutSuffix get() = name.removeSuffix(DELIMITER + suffix)
 
     /**
-     * The domain, stripped from its prefix.
+     * The domain name, stripped from the [prefix], if any.
      */
-    val root: Domain
-        get() {
-            return Domain(nameWithoutSuffix.substringAfterLast(DELIMITER) + DELIMITER + suffix)
-        }
+    val root get() = if (hasPrefix) nameWithoutSuffix.substringAfterLast(DELIMITER) + DELIMITER + suffix else name
+
+    /**
+     * This domain's [root] labels, which are separated by [`.`][DELIMITER].
+     */
+    val rootLabels get() = root.split()
 
     /**
      * This domain's prefix/sub-domain.
      */
-    val prefix: String
-        get() {
-            return nameWithoutSuffix.substringBeforeLast(DELIMITER, "")
-        }
+    val prefix get() = nameWithoutSuffix.substringBeforeLast(DELIMITER, "")
 
     /**
      * This domain's prefix/sub-domain labels, which are separated by [`.`][DELIMITER].
@@ -81,4 +85,7 @@ inline class Domain(
     val hasPrefix get() = prefix.isNotEmpty()
 
     fun stripSubDomain() = if (hasPrefix) Domain(name.substringAfter(DELIMITER)) else this
+
+    fun stripSubDomains() =
+        if (hasPrefix) Domain(nameWithoutSuffix.substringAfterLast(DELIMITER) + DELIMITER + suffix) else this
 }
