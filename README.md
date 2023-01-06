@@ -1,5 +1,5 @@
-[![GitHub Actions](https://img.shields.io/github/workflow/status/reimersoftware/domain-ktx/CI?style=flat-square)](https://github.com/reimersoftware/domain-ktx/actions?query=workflow%3A"CI")
-[![JitPack](https://img.shields.io/jitpack/v/github/reimersoftware/domain-ktx?style=flat-square)](https://jitpack.io/#dev.reimer/domain-ktx)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/heinrichreimer/domain-ktx/ci.yml?branch=master&style=flat-square)](https://github.com/heinrichreimer/domain-ktx/actions/workflows/ci.yml)
+[![JitPack](https://img.shields.io/jitpack/v/github/heinrichreimer/domain-ktx?style=flat-square)](https://jitpack.io/#dev.reimer/domain-ktx)
 
 # 🌐 domain-ktx<sup>[α](#status-α)</sup>
 
