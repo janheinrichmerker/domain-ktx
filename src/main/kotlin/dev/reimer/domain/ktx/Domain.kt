@@ -1,6 +1,7 @@
 package dev.reimer.domain.ktx
 
-inline class Domain(
+@JvmInline
+value class Domain(
     val name: String
 ) {
 

@@ -3,17 +3,19 @@ plugins {
     id("de.undercouch.download") version "4.0.2"
     `maven-publish`
     id("org.jetbrains.dokka") version "0.9.17"
+    id("com.palantir.git-version") version "3.0.0"
 }
 
+val gitVersion: groovy.lang.Closure<String> by extra
 group = "dev.reimer"
-version = "0.2.0"
+version = gitVersion()
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
     implementation("de.malkusch.whois-server-list:public-suffix-list:2.2.0")
 }
 
@@ -28,18 +30,10 @@ tasks {
     }
 
     compileKotlin {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            freeCompilerArgs = freeCompilerArgs + "-Xinline-classes"
-        }
         dependsOn(download)
     }
 
     compileTestKotlin {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            freeCompilerArgs = freeCompilerArgs + "-Xinline-classes"
-        }
         dependsOn(download)
     }
 
