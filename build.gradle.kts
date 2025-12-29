@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("de.malkusch.whois-server-list:public-suffix-list:2.2.0")
+    implementation("de.malkusch.whois-server-list:public-suffix-list:2.2.4")
 }
 
 lateinit var javadocJar: TaskProvider<Jar>
