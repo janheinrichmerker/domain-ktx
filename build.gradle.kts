@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.2.20"
+    kotlin("jvm") version "2.3.10"
     id("de.undercouch.download") version "5.6.0"
     `maven-publish`
     id("org.jetbrains.dokka") version "0.9.17"
